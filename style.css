@@ -1,0 +1,29 @@
+.container{
+  border: solid 1px black;
+  max-width: 800px;
+  overflow: hidden;
+  height: 100%;
+  margin: auto;
+}
+.carousel{
+  position: relative;
+  width: 6000px;
+}
+.page{
+  width: 100%;
+  margin: 0 auto;
+}
+.thing{
+  margin: 1%;
+  padding: 1%;
+  background-color: beige;
+  border-radius: 5%;
+  display: inline-block;
+  max-width: 700px;
+  width: 100%;
+  vertical-align: top;
+}
+.button{
+  margin: auto;
+  text-align: center;
+}
