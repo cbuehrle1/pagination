@@ -4,53 +4,60 @@
 
     this.dom = html;
 
-    this.populateAttributes = function (index) {
-      this.dom.setAttribute("sectionIndex", index);
+    this.populateAttributes = function (width) {
+      this.dom.setAttribute("sectionWidth", width);
+      console.dir(this.dom);
     }
 
-    this.getWidth = function () {
-      var result = this.dom.offsetWidth;
-      return result;
+    this.resetAttribute = function () {
+      this.dom.removeAttribute("sectionWidth");
     }
 
-    this.showHide = function (index, current) {
+    this.setPosition = function (index, current) {
 
       if (index == current) {
-        this.dom.setAttribute("show", true);
-      }
-      else {
-        this.dom.setAttribute("show", false);
+        console.dir(this.dom);
+        var leftPx = -(this.dom.attributes.sectionWidth.value) + 'px';
+        return leftPx;
       }
 
-    }
-
-    this.setDisplay = function () {
-
-      var toShow = this.dom.attributes.show.value;
-
-      if (toShow === 'true') {
-        // this.dom.style.display = "block";
-        console.log('move thing');
-      }
-      else {
-        // this.dom.style.display = "none";
-        console.log('dont move thing');
-      }
     }
 
   }
+
+  var throttle = function(type, name, obj) {
+        obj = obj || window;
+        var running = false;
+        var func = function() {
+            if (running) { return; }
+            running = true;
+             requestAnimationFrame(function() {
+                obj.dispatchEvent(new CustomEvent(name));
+                running = false;
+            });
+        };
+        obj.addEventListener(type, func);
+    };
+
+  throttle("resize", "optimizedResize");
 
   function begin() {
     var things = document.querySelectorAll(".thing");
     var next = document.querySelector(".next");
     var back = document.querySelector(".back");
     var carousel = document.querySelector(".carousel");
+    var container = document.querySelector(".container");
     var counter = 0;
     var width = 0;
 
     function buildWidth () {
-      var output = thing.getWidth();
-      width += output;
+        thing.populateAttributes(width);
+        var containerWidth = container.clientWidth;
+        width += containerWidth;
+    }
+
+    function resetSectionWidth () {
+      thing.resetAttribute();
     }
 
     function setCarouselWidth () {
@@ -59,31 +66,27 @@
 
     for (var i = 0; i < things.length; i++) {
       var thing = new Section(things[i]);
-      thing.populateAttributes(i);
       buildWidth();
-      thing.showHide(i, counter);
-      thing.setDisplay();
-      console.dir(thing);
     }
 
-    console.dir(carousel);
-    console.log(width);
     function update() {
+      var left;
       for (var i = 0; i < things.length; i++) {
         var thing = new Section(things[i]);
-        thing.showHide(i, counter);
-        thing.setDisplay();
+        var position = thing.setPosition(i, counter);
+        if (position !== undefined) {
+          left = position;
+        }
       }
+      carousel.style.left = left;
     }
 
     setCarouselWidth();
 
     next.addEventListener("click", function () {
-      if (counter < 2) {
+      if (counter < (things.length - 1)) {
         counter++;
-        console.log(counter);
       }
-      carousel.style.left =  -(width / 3) + 'px';
       update();
     });
 
@@ -91,8 +94,18 @@
 
       if (counter > 0) {
         counter--;
-        console.log(counter);
       }
+      update();
+    });
+
+    window.addEventListener("optimizedResize", function() {
+      width = 0;
+      for (var i = 0; i < things.length; i++) {
+        var thing = new Section(things[i]);
+        resetSectionWidth();
+        buildWidth();
+      }
+      setCarouselWidth();
       update();
     });
 
