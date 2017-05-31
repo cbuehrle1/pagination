@@ -82,7 +82,8 @@
     }
 
     setCarouselWidth();
-
+    update();
+    
     next.addEventListener("click", function () {
       if (counter < (things.length - 1)) {
         counter++;

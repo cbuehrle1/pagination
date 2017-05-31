@@ -1,0 +1,62 @@
+.container{
+  border: solid 1px black;
+  max-width: 400px;
+  margin: auto;
+  height: 200px;
+}
+.page{
+  width: 100%;
+  margin: 0 auto;
+}
+.carousel{
+  position: relative;
+  height: 100%;
+}
+.thing{
+  margin: 1%;
+  padding: 1%;
+  background-color: beige;
+  border-radius: 5%;
+  position: absolute;
+  top: 0;
+  vertical-align: top;
+  transition-property: left;
+  transition-duration: 1s;
+}
+.left{
+  top: 0;
+  left: -800px;
+  width: 100px;
+  transition-property: left;
+  transition-duration: 1s;
+}
+.middle{
+  top: 0;
+  left: 0px;
+  transition-property: left;
+  transition-duration: 1s;
+}
+.right{
+  top: 0;
+  left: 800px;
+  transition-property: left;
+  transition-duration: 1s;
+}
+
+.show{
+  opacity: 1;
+  transition-property: opacity;
+  transition-duration: 1s;
+}
+.hide{
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 1s;
+}
+
+
+
+.button{
+  margin: auto;
+  text-align: center;
+}
